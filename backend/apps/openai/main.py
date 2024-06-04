@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request, Response, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, JSONResponse, FileResponse
@@ -60,6 +61,12 @@ app.state.config.OPENAI_API_KEYS = OPENAI_API_KEYS
 
 app.state.MODELS = {}
 
+###################################
+# ADDED ORGANIZATION-KEY AND PROJECT-KEY BY LARRY AT MAY. 27, 2024
+# The combination for keys are able to control 
+# API access and expense
+###################################
+OPENAI_ORGANIZATION_KEY = os.environ.get("OPENAI_ORGANIZATION_KEY", "")
 
 @app.middleware("http")
 async def check_url(request: Request, call_next):
@@ -137,6 +144,11 @@ async def speech(request: Request, user=Depends(get_verified_user)):
 
         headers = {}
         headers["Authorization"] = f"Bearer {app.state.config.OPENAI_API_KEYS[idx]}"
+        
+        # add organization key and project key on headers by larry
+        headers["OpenAI-Organization"] = f"{OPENAI_ORGANIZATION_KEY}"
+        headers["OpenAI-Project"] = user.project_key
+
         headers["Content-Type"] = "application/json"
         if "openrouter.ai" in app.state.config.OPENAI_API_BASE_URLS[idx]:
             headers["HTTP-Referer"] = "https://openwebui.com/"
@@ -455,6 +467,11 @@ async def proxy(path: str, request: Request, user=Depends(get_verified_user)):
 
     headers = {}
     headers["Authorization"] = f"Bearer {key}"
+
+    # add organization key and project key on headers by larry
+    headers["OpenAI-Organization"] = f"{OPENAI_ORGANIZATION_KEY}"
+    headers["OpenAI-Project"] = user.project_key
+
     headers["Content-Type"] = "application/json"
 
     r = None

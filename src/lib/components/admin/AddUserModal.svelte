@@ -20,7 +20,8 @@
 		name: '',
 		email: '',
 		password: '',
-		role: 'user'
+		role: 'user',
+		project_key: ''
 	};
 
 	$: if (show) {
@@ -28,7 +29,8 @@
 			name: '',
 			email: '',
 			password: '',
-			role: 'user'
+			role: 'user',
+			project_key: ''
 		};
 	}
 
@@ -46,7 +48,8 @@
 				_user.name,
 				_user.email,
 				_user.password,
-				_user.role
+				_user.role,
+				_user.project_key
 			).catch((error) => {
 				toast.error(error);
 			});
@@ -82,7 +85,8 @@
 									columns[0],
 									columns[1],
 									columns[2],
-									columns[3].toLowerCase()
+									columns[3].toLowerCase(),
+									columns[4]
 								).catch((error) => {
 									toast.error(`Row ${idx + 1}: ${error}`);
 									return null;
@@ -228,6 +232,20 @@
 									/>
 								</div>
 							</div>
+
+							<div class="flex flex-col w-full mt-2">
+								<div class=" mb-1 text-xs text-gray-500">Project Key</div>
+
+								<div class="flex-1">
+									<input
+										class="w-full rounded-lg py-2 px-4 text-sm dark:text-gray-300 dark:bg-gray-850 disabled:text-gray-500 dark:disabled:text-gray-500 outline-none"
+										type="text"
+										bind:value={_user.project_key}
+										autocomplete="off"
+									/>
+								</div>
+							</div>
+
 						{:else if tab === 'import'}
 							<div>
 								<div class="mb-3 w-full">

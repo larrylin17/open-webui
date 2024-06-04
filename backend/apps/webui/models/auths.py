@@ -91,6 +91,7 @@ class SignupForm(BaseModel):
 
 class AddUserForm(SignupForm):
     role: Optional[str] = "pending"
+    project_key: Optional[str] = ""
 
 
 class AuthsTable:
@@ -105,6 +106,7 @@ class AuthsTable:
         name: str,
         profile_image_url: str = "/user.png",
         role: str = "pending",
+        project_key: str = "",
     ) -> Optional[UserModel]:
         log.info("insert_new_auth")
 
@@ -115,7 +117,7 @@ class AuthsTable:
         )
         result = Auth.create(**auth.model_dump())
 
-        user = Users.insert_new_user(id, name, email, profile_image_url, role)
+        user = Users.insert_new_user(id, name, email, profile_image_url, role, project_key)
 
         if result and user:
             return user

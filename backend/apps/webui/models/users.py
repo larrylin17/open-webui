@@ -23,7 +23,7 @@ class User(Model):
     last_active_at = BigIntegerField()
     updated_at = BigIntegerField()
     created_at = BigIntegerField()
-
+    project_key = CharField(null=True)
     api_key = CharField(null=True, unique=True)
     settings = JSONField(null=True)
 
@@ -47,7 +47,7 @@ class UserModel(BaseModel):
     last_active_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
     created_at: int  # timestamp in epoch
-
+    project_key: str
     api_key: Optional[str] = None
     settings: Optional[UserSettings] = None
 
@@ -81,6 +81,7 @@ class UsersTable:
         email: str,
         profile_image_url: str = "/user.png",
         role: str = "pending",
+        project_key: str = ""
     ) -> Optional[UserModel]:
         user = UserModel(
             **{
@@ -88,6 +89,7 @@ class UsersTable:
                 "name": name,
                 "email": email,
                 "role": role,
+                "project_key": project_key,
                 "profile_image_url": profile_image_url,
                 "last_active_at": int(time.time()),
                 "created_at": int(time.time()),
