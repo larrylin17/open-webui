@@ -9,6 +9,7 @@ import logging
 import aiohttp
 import requests
 import mimetypes
+import ssl
 
 from fastapi import FastAPI, Request, Depends, status
 from fastapi.staticfiles import StaticFiles
@@ -106,6 +107,9 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     docs_url="/docs" if ENV == "dev" else None, redoc_url=None, lifespan=lifespan
 )
+
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain('./certs/ssl_certificate.cer', keyfile='./certs/private_key.key')
 
 app.state.config = AppConfig()
 

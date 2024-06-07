@@ -25,6 +25,7 @@ static/pyodide/*
 build/
 develop-eggs/
 dist/
+certs/
 downloads/
 eggs/
 .eggs/
