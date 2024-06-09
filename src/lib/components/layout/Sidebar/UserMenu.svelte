@@ -5,6 +5,7 @@
 	import { flyAndScale } from '$lib/utils/transitions';
 	import { goto } from '$app/navigation';
 	import ArchiveBox from '$lib/components/icons/ArchiveBox.svelte';
+	import Plus from '$lib/components/icons/Plus.svelte';
 	import { showSettings } from '$lib/stores';
 	import { fade, slide } from 'svelte/transition';
 
@@ -13,6 +14,7 @@
 	export let show = false;
 	export let role = '';
 	export let className = 'max-w-[240px]';
+
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -77,6 +79,22 @@
 					<ArchiveBox className="size-5" strokeWidth="1.5" />
 				</div>
 				<div class=" self-center font-medium">{$i18n.t('Archived Chats')}</div>
+			</button>
+
+			<button
+				class="flex rounded-md py-2 px-3 w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+				on:click={() => {
+					window.open(
+					'https://studywithlarry.com/product-category/chatgpt-plan/',
+					'_blank' // <- This is what makes it open in a new window.
+					);
+					location.href=""
+				}}
+			>
+				<div class=" self-center mr-3">
+					<Plus className="size-5" strokeWidth="1.5" />
+				</div>
+				<div class=" self-center font-medium">{$i18n.t('Top Up')}</div>
 			</button>
 
 			{#if role === 'admin'}
